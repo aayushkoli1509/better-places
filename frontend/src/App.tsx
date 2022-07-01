@@ -4,8 +4,9 @@ import {
   Routes,
   Route
 } from 'react-router-dom';
-import NewPlace from './places/pages/NewPlace';
-import Users from './user/pages/Users';
+
+import NewPlace from '@places/pages/NewPlace';
+import Users from '@user/pages/Users';
 
 const App = () => {
   return (
