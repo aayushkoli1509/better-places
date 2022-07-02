@@ -1,5 +1,5 @@
+import Card from '@shared/components/Card';
 import UserItem from '../UserItem';
-
 import { IUser } from '@shared/types';
 
 import './index.css';
@@ -11,8 +11,10 @@ interface IProps {
 const UsersList = ({ items }: IProps) => {
   if (items.length === 0) {
     return (
-      <div>
-        <h2>No users found.</h2>
+      <div className='center'>
+        <Card>
+          <h2>No users found.</h2>
+        </Card>
       </div>
     );
   }
