@@ -9,7 +9,6 @@ import './index.css';
 
 const MainNavigation = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
   const openDrawerHandler = () => setIsDrawerOpen(true);
   const closeDrawerHandler = () => setIsDrawerOpen(false);
   return (
