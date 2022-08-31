@@ -16,9 +16,9 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@shared/*": ["./src/shared/*"],
-      "@user/*": ["./src/user/*"],
-      "@places/*": ["./src/places/*"]
+      "@components/*": ["./src/components/*"],
+      "@types": ["./src/types"],
+      "@pages/*": ["./src/pages/*"]
     }
   },
   "include": ["src"],

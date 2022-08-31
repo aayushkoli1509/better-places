@@ -1,8 +1,9 @@
-import Card from '@shared/components/Card';
-import UserItem from '../UserItem';
-import { IUser } from '@shared/types';
-
 import './index.css';
+
+import Card from '@components/shared/Card';
+import { IUser } from '@types';
+
+import UserItem from '../UserItem';
 
 interface IProps {
   items: IUser[];

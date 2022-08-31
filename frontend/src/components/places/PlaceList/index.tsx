@@ -1,8 +1,9 @@
-import Card from '@shared/components/Card';
-import { IPlace } from '@shared/types';
-import PlaceItem from '../PlaceItem';
-
 import './index.css';
+
+import Card from '@components/shared/Card';
+import { IPlace } from '@types';
+
+import PlaceItem from '../PlaceItem';
 
 interface IProps {
   items: IPlace[];

@@ -1,9 +1,9 @@
+import './index.css';
+
 import { Link } from 'react-router-dom';
 
-import Avatar from '@shared/components/Avatar';
-import Card from '@shared/components/Card';
-
-import './index.css';
+import Avatar from '@components/shared/Avatar';
+import Card from '@components/shared/Card';
 
 interface IProps {
   id: string;

@@ -7,9 +7,15 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: [
-      { find: '@shared', replacement: path.resolve(__dirname, 'src/shared') },
-      { find: '@user', replacement: path.resolve(__dirname, 'src/user') },
-      { find: '@places', replacement: path.resolve(__dirname, 'src/places') }
+      {
+        find: '@components',
+        replacement: path.resolve(__dirname, 'src/components')
+      },
+      { find: '@pages', replacement: path.resolve(__dirname, 'src/pages') },
+      {
+        find: '@types',
+        replacement: path.resolve(__dirname, 'src/types')
+      }
     ]
   }
 });

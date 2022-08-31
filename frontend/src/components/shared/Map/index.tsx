@@ -2,8 +2,8 @@ import './index.css';
 
 import React from 'react';
 
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
-import { ILocation } from '@shared/types';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { ILocation } from '@types';
 
 interface IProps {
   center: ILocation;

@@ -1,6 +1,8 @@
-import PlaceList from '@places/components/PlaceList';
-import { IPlace } from '@shared/types';
 import { useParams } from 'react-router-dom';
+
+import { IPlace } from '@types';
+
+import PlaceList from '../components/places/PlaceList';
 
 const UserPlaces = () => {
   const PLACES: IPlace[] = [

@@ -1,14 +1,14 @@
 import {
   BrowserRouter as Router,
   Navigate,
-  Routes,
-  Route
+  Route,
+  Routes
 } from 'react-router-dom';
 
-import NewPlace from '@places/pages/NewPlace';
-import Users from '@user/pages/Users';
-import Navigation from '@shared/components/Navigation';
-import UserPlaces from '@places/pages/UserPlaces';
+import Navigation from '@components/shared/Navigation';
+import NewPlace from '@pages/NewPlace';
+import UserPlaces from '@pages/UserPlaces';
+import Users from '@pages/Users';
 
 const App = () => {
   return (

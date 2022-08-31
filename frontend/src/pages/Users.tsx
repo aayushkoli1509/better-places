@@ -1,5 +1,6 @@
-import { IUser } from '@shared/types';
-import UsersList from '../components/UsersList';
+import { IUser } from '@types';
+
+import UsersList from '../components/users/UsersList';
 
 const Users = () => {
   const USERS: IUser[] = [
