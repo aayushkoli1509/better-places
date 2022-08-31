@@ -1,10 +1,12 @@
-import Button from '@shared/components/Button';
-import Card from '@shared/components/Card';
-import Modal from '@shared/components/Modal';
-import { ILocation } from '@shared/types';
+import './index.css';
+
 import { useState } from 'react';
 
-import './index.css';
+import Button from '@shared/components/Button';
+import Card from '@shared/components/Card';
+import Map from '@shared/components/Map';
+import Modal from '@shared/components/Modal';
+import { ILocation } from '@shared/types';
 
 interface IProps {
   id: string;
@@ -40,7 +42,9 @@ const PlaceItem: React.FC<IProps> = ({
         footerClassName='place-item__modal-actions'
         footer={<Button onClick={closeMapHandler}>CLOSE</Button>}
       >
-        <div className='map-container'>Hello</div>
+        <div className='map-container'>
+          <Map center={coordinates} zoom={14} />
+        </div>
       </Modal>
       <li className='place-item'>
         <Card className='place-item__content'>
