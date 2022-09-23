@@ -18,7 +18,9 @@
     "paths": {
       "@components/*": ["./src/components/*"],
       "@types": ["./src/types"],
-      "@pages/*": ["./src/pages/*"]
+      "@pages/*": ["./src/pages/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@hooks/*": ["./src/hooks/*"]
     }
   },
   "include": ["src"],

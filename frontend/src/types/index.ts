@@ -19,3 +19,10 @@ export interface ILocation {
   lat: number;
   lng: number;
 }
+
+export interface IValidator {
+  type: string;
+  val?: number;
+}
+
+export type IValidatorFunction = () => IValidator;
