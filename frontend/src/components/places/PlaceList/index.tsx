@@ -4,6 +4,7 @@ import Card from '@components/shared/Card';
 import { IPlace } from '@types';
 
 import PlaceItem from '../PlaceItem';
+import Button from '../../shared/Button';
 
 interface IProps {
   items: IPlace[];
@@ -12,10 +13,10 @@ interface IProps {
 const PlaceList: React.FC<IProps> = ({ items }) => {
   if (items.length === 0) {
     return (
-      <div>
+      <div className='place-list center'>
         <Card>
           <h2>No places found. Maybe create one?</h2>
-          <button>Share Place</button>
+          <Button to='/places/new'>Share Place</Button>
         </Card>
       </div>
     );
