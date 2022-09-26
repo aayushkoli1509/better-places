@@ -48,7 +48,7 @@ const UpdatePlace = () => {
         isValid: false
       }
     },
-    true
+    false
   );
 
   const identifiedPlace = PLACES.find(place => place.id === placeId);
