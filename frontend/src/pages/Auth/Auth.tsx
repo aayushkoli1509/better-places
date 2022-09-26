@@ -8,7 +8,8 @@ import {
 } from '@utils/validators';
 import Card from '@components/shared/Card';
 import Button from '@components/shared/Button';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { AuthContext } from '@context/authContext';
 
 const Auth = () => {
   const [formState, inputHandler, setFormData] = useForm(
@@ -26,9 +27,12 @@ const Auth = () => {
   );
   const [isLoginMode, setIsLoginMode] = useState(true);
 
+  const auth = useContext(AuthContext);
+
   const authSubmitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(formState.inputs); // Send this to the backend!
+    console.log(formState.inputs);
+    auth.login();
   };
 
   const switchModeHandler = () => {

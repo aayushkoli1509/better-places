@@ -7,6 +7,8 @@ import Card from '@components/shared/Card';
 import Map from '@components/shared/Map';
 import Modal from '@components/shared/Modal';
 import { ILocation } from '@types';
+import { useContext } from 'react';
+import { AuthContext } from '@context/authContext';
 
 interface IProps {
   id: string;
@@ -29,6 +31,7 @@ const PlaceItem: React.FC<IProps> = ({
 }) => {
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const auth = useContext(AuthContext);
 
   const openMapHandler = () => setShowMap(true);
   const closeMapHandler = () => setShowMap(false);
@@ -90,10 +93,14 @@ const PlaceItem: React.FC<IProps> = ({
             <Button inverse onClick={openMapHandler}>
               VIEW ON MAP
             </Button>
-            <Button to={`/places/${id}`}>EDIT</Button>
-            <Button danger onClick={showDeleteWarningHandler}>
-              DELETE
-            </Button>
+            {auth.isLoggedIn && (
+              <>
+                <Button to={`/places/${id}`}>EDIT</Button>
+                <Button danger onClick={showDeleteWarningHandler}>
+                  DELETE
+                </Button>
+              </>
+            )}
           </div>
         </Card>
       </li>
