@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
 
+const placesRoutes = require('./routes/placesRoutes');
 dotenv.config();
 
 const app: Express = express();
@@ -19,6 +20,8 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+app.use('/api/places', placesRoutes);
 
 app.get('/greet', (req, res, next) => {
   res.status(200).json({ hello: 'hey there' });
