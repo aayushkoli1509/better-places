@@ -12,3 +12,7 @@ export interface ILocation {
   lat: number;
   lng: number;
 }
+
+export interface TypedRequest<T> extends Express.Request {
+  body: T;
+}

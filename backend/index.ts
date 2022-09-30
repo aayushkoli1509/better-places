@@ -1,7 +1,7 @@
 import express, { ErrorRequestHandler, Express } from 'express';
 import dotenv from 'dotenv';
 
-import placesRoutes from './routes/placesRoutes';
+import placesRoutes from './routes/placesRoutes.js';
 
 dotenv.config();
 
@@ -21,6 +21,9 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+app.use(express.json());
+app.use(express.urlencoded());
 
 app.use('/api/places', placesRoutes);
 

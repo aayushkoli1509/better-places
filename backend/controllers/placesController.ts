@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import HttpError from '../models/httpError';
-import { IPlace } from '../types';
+import HttpError from '../models/httpError.js';
+import { ILocation, IPlace, TypedRequest } from '../types/index.js';
+
+import { nanoid } from 'nanoid';
 
 const PLACES: IPlace[] = [
   {
@@ -50,4 +52,30 @@ const getPlacesByUserId = (req: Request, res: Response, next: NextFunction) => {
   res.json({ places });
 };
 
-export { getPlaceById, getPlacesByUserId };
+const createPlace = (
+  req: TypedRequest<{
+    title: string;
+    description: string;
+    coordinates: ILocation;
+    address: string;
+    creator: string;
+  }>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { title, description, coordinates, address, creator } = req.body;
+  const createdPlace: IPlace = {
+    id: nanoid(),
+    title,
+    description,
+    location: coordinates,
+    address,
+    creator,
+    imageURL:
+      'https://media.cntraveler.com/photos/58d2b8c7ed5947303561e5f3/master/w_1920%2Cc_limit/ashikaga-flower-park-wisteria-GettyImages-473675978.jpg'
+  };
+  PLACES.push(createdPlace);
+  res.status(201).json({ place: createdPlace });
+};
+
+export { getPlaceById, getPlacesByUserId, createPlace };
