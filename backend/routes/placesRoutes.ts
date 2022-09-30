@@ -1,5 +1,6 @@
 import express from 'express';
 import { IPlace } from '../types';
+import HttpError from '../models/httpError';
 
 const PLACES: IPlace[] = [
   {
@@ -31,13 +32,24 @@ const router = express.Router();
 router.get('/:pid', (req, res, next) => {
   const placeId = req.params.pid;
   const place = PLACES.find(p => p.id === placeId);
+  if (!place) {
+    return next(
+      new HttpError('Could not find a place for the provided id.', 404)
+    );
+  }
   res.json({ place });
 });
 
 router.get('/user/:uid', (req, res, next) => {
   const userId = req.params.uid;
   const places = PLACES.filter(p => p.creator === userId);
+
+  if (!places.length) {
+    return next(
+      new HttpError('Could not find a place for the provided user id.', 404)
+    );
+  }
   res.json({ places });
 });
 
-module.exports = router;
+export default router;

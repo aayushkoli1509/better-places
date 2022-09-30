@@ -1,7 +1,8 @@
-import express, { Express } from 'express';
+import express, { ErrorRequestHandler, Express } from 'express';
 import dotenv from 'dotenv';
 
-const placesRoutes = require('./routes/placesRoutes');
+import placesRoutes from './routes/placesRoutes';
+
 dotenv.config();
 
 const app: Express = express();
@@ -23,9 +24,15 @@ app.use((req, res, next) => {
 
 app.use('/api/places', placesRoutes);
 
-app.get('/greet', (req, res, next) => {
-  res.status(200).json({ hello: 'hey there' });
-});
+const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
+  if (res.headersSent) {
+    return next(error);
+  }
+  res.status(error.code || 500);
+  res.json({ message: error.message || 'An unknown error occurred!' });
+};
+
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
