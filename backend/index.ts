@@ -2,6 +2,7 @@ import express, { ErrorRequestHandler, Express } from 'express';
 import dotenv from 'dotenv';
 
 import placesRoutes from './routes/placesRoutes.js';
+import usersRoutes from './routes/usersRoutes.js';
 import HttpError from './models/httpError.js';
 
 dotenv.config();
@@ -27,6 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 app.use('/api/places', placesRoutes);
+app.use('/api/users', usersRoutes);
 
 app.use(() => {
   const error = new HttpError('Could not find this route.', 404);
