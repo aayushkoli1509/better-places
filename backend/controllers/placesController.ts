@@ -4,7 +4,7 @@ import { ILocation, IPlace, TypedRequest } from '../types/index.js';
 
 import { nanoid } from 'nanoid';
 
-const PLACES: IPlace[] = [
+let PLACES: IPlace[] = [
   {
     id: 'p1',
     title: 'Mt. Yoshino',
@@ -78,4 +78,34 @@ const createPlace = (
   res.status(201).json({ place: createdPlace });
 };
 
-export { getPlaceById, getPlacesByUserId, createPlace };
+const updatePlace = (req: Request, res: Response, next: NextFunction) => {
+  const placeId = req.params.pid;
+  const { title, description } = req.body;
+  const place = PLACES.find(p => p.id === placeId);
+
+  if (!place) {
+    return next(
+      new HttpError('Could not find a place for the provided place id.', 404)
+    );
+  }
+  const updatedPlace = { ...place, title, description };
+  const placeIndex = PLACES.findIndex(p => p.id === placeId);
+  PLACES[placeIndex] = updatedPlace;
+
+  res.status(200).json({ place: updatedPlace });
+};
+
+const deletePlace = (req: Request, res: Response) => {
+  const placeId = req.params.pid;
+  PLACES = PLACES.filter(p => p.id !== placeId);
+
+  res.status(200).json({ message: 'Deleted Place.' });
+};
+
+export {
+  getPlaceById,
+  getPlacesByUserId,
+  createPlace,
+  updatePlace,
+  deletePlace
+};
