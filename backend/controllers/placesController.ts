@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 import HttpError from '../models/httpError.js';
 import { ILocation, IPlace, TypedRequest } from '../types/index.js';
 
 import { nanoid } from 'nanoid';
+import { getCoordsForAddress } from '../utils/location.js';
 
 let PLACES: IPlace[] = [
   {
@@ -52,7 +54,7 @@ const getPlacesByUserId = (req: Request, res: Response, next: NextFunction) => {
   res.json({ places });
 };
 
-const createPlace = (
+const createPlace = async (
   req: TypedRequest<{
     title: string;
     description: string;
@@ -63,7 +65,23 @@ const createPlace = (
   res: Response,
   next: NextFunction
 ) => {
-  const { title, description, coordinates, address, creator } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError('Invalid inputs passed, please check your data.', 422)
+    );
+  }
+
+  const { title, description, address, creator } = req.body;
+
+  let coordinates: ILocation;
+
+  try {
+    coordinates = await getCoordsForAddress(address);
+  } catch (error) {
+    return next(error);
+  }
+
   const createdPlace: IPlace = {
     id: nanoid(),
     title,
@@ -79,6 +97,12 @@ const createPlace = (
 };
 
 const updatePlace = (req: Request, res: Response, next: NextFunction) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError('Invalid inputs passed, please check your data.', 422)
+    );
+  }
   const placeId = req.params.pid;
   const { title, description } = req.body;
   const place = PLACES.find(p => p.id === placeId);
@@ -95,8 +119,13 @@ const updatePlace = (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({ place: updatedPlace });
 };
 
-const deletePlace = (req: Request, res: Response) => {
+const deletePlace = (req: Request, res: Response, next: NextFunction) => {
   const placeId = req.params.pid;
+  if (!PLACES.find(p => p.id === placeId)) {
+    return next(
+      new HttpError('Could not find a place for the provided place id.', 404)
+    );
+  }
   PLACES = PLACES.filter(p => p.id !== placeId);
 
   res.status(200).json({ message: 'Deleted Place.' });
