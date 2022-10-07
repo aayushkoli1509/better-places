@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import HttpError from '../models/httpError.js';
 import { TypedRequest } from '../types';
 import { nanoid } from 'nanoid';
+import { validationResult } from 'express-validator';
 
 const USERS = [
   {
@@ -25,6 +26,12 @@ const signup = (
   res: Response,
   next: NextFunction
 ) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError('Invalid inputs passed, please check your data.', 422)
+    );
+  }
   const { name, email, password } = req.body;
   if (USERS.find(u => u.email === email)) {
     return next(
