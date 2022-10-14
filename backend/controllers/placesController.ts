@@ -3,8 +3,8 @@ import { validationResult } from 'express-validator';
 import HttpError from '../models/httpError.js';
 import { ILocation, IPlace, TypedRequest } from '../types/index.js';
 
-import { nanoid } from 'nanoid';
 import { getCoordsForAddress } from '../utils/location.js';
+import Place from '../models/place.js';
 
 let PLACES: IPlace[] = [
   {
@@ -82,8 +82,7 @@ const createPlace = async (
     return next(error);
   }
 
-  const createdPlace: IPlace = {
-    id: nanoid(),
+  const createdPlace = new Place({
     title,
     description,
     location: coordinates,
@@ -91,8 +90,14 @@ const createPlace = async (
     creator,
     imageURL:
       'https://media.cntraveler.com/photos/58d2b8c7ed5947303561e5f3/master/w_1920%2Cc_limit/ashikaga-flower-park-wisteria-GettyImages-473675978.jpg'
-  };
-  PLACES.push(createdPlace);
+  });
+
+  try {
+    await createdPlace.save();
+  } catch (error) {
+    return next(new HttpError('Creating place failed, please try again.', 500));
+  }
+
   res.status(201).json({ place: createdPlace });
 };
 

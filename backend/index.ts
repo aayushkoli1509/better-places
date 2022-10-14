@@ -1,5 +1,6 @@
 import express, { ErrorRequestHandler, Express } from 'express';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
 import placesRoutes from './routes/placesRoutes.js';
 import usersRoutes from './routes/usersRoutes.js';
@@ -45,6 +46,13 @@ const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
-});
+mongoose
+  .connect(process.env.MONGO_URI!)
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`⚡️[server]: running at http://localhost:${port}`);
+    });
+  })
+  .catch(err => {
+    console.log(err);
+  });
