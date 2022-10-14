@@ -31,27 +31,48 @@ let PLACES: IPlace[] = [
   }
 ];
 
-const getPlaceById = (req: Request, res: Response, next: NextFunction) => {
+const getPlaceById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const placeId = req.params.pid;
-  const place = PLACES.find(p => p.id === placeId);
-  if (!place) {
+  try {
+    const place = await Place.findById(placeId);
+    if (!place) {
+      return next(
+        new HttpError('Could not find a place for the provided id.', 404)
+      );
+    }
+    res.json({ place: place.toObject({ getters: true }) });
+  } catch (error) {
     return next(
-      new HttpError('Could not find a place for the provided id.', 404)
+      new HttpError('Something went wrong, could not find a place.', 500)
     );
   }
-  res.json({ place });
 };
 
-const getPlacesByUserId = (req: Request, res: Response, next: NextFunction) => {
+const getPlacesByUserId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const userId = req.params.uid;
-  const places = PLACES.filter(p => p.creator === userId);
-
-  if (!places.length) {
+  try {
+    const places = await Place.find({ creator: userId });
+    if (!places.length) {
+      return next(
+        new HttpError('Could not find a place for the provided user id.', 404)
+      );
+    }
+    res.json({
+      places: places.map(place => place.toObject({ getters: true }))
+    });
+  } catch (error) {
     return next(
-      new HttpError('Could not find a place for the provided user id.', 404)
+      new HttpError('Fetching places failed, please try again later.', 500)
     );
   }
-  res.json({ places });
 };
 
 const createPlace = async (
