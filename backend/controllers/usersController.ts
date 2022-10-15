@@ -62,7 +62,7 @@ const signup = async (
   }
 };
 
-const login = (
+const login = async (
   req: TypedRequest<{
     email: string;
     password: string;
@@ -71,16 +71,20 @@ const login = (
   next: NextFunction
 ) => {
   const { email, password } = req.body;
-  const identifiedUser = USERS.find(u => u.email === email);
-  if (!identifiedUser || identifiedUser.password !== password) {
-    return next(
-      new HttpError(
-        'Could not identify user, credentials seem to be wrong.',
-        401
-      )
-    );
+  try {
+    const identifiedUser = await User.findOne({ email });
+    if (!identifiedUser || identifiedUser.password !== password) {
+      return next(
+        new HttpError(
+          'Could not identify user, credentials seem to be wrong.',
+          401
+        )
+      );
+    }
+    res.json({ message: 'Logged in!' });
+  } catch {
+    return next(new HttpError('Logging in failed, please try again.', 500));
   }
-  res.json({ message: 'Logged in!' });
 };
 
 export { getUsers, signup, login };
