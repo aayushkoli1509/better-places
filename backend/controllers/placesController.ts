@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import HttpError from '../models/httpError.js';
-import { ILocation, IPlace, TypedRequest } from '../types/index.js';
+import { ILocation, IPlace, IUserModel, TypedRequest } from '../types/index.js';
 import mongoose from 'mongoose';
 
 import { getCoordsForAddress } from '../utils/location.js';
@@ -175,14 +175,21 @@ const updatePlace = async (req: Request, res: Response, next: NextFunction) => {
 const deletePlace = async (req: Request, res: Response, next: NextFunction) => {
   const placeId = req.params.pid;
   try {
-    const place = await Place.findById(placeId);
+    const place = await Place.findById(placeId).populate<{
+      creator: IUserModel;
+    }>('creator');
     if (!place) {
       return next(
         new HttpError('Could not find a place for the provided place id.', 404)
       );
     }
     try {
-      await place.remove();
+      const sess = await mongoose.startSession();
+      sess.startTransaction();
+      await place.remove({ session: sess });
+      await place.creator.places.pull(place);
+      await place.creator.save({ session: sess });
+      await sess.commitTransaction();
     } catch (error) {
       return next(
         new HttpError('Something went wrong, could not delete place.', 500)

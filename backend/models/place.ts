@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { IPlaceModel } from '../types';
 
 const Schema = mongoose.Schema;
 
@@ -14,4 +15,4 @@ const placeSchema = new Schema({
   creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' }
 });
 
-export default mongoose.model('Place', placeSchema);
+export default mongoose.model<IPlaceModel>('Place', placeSchema);

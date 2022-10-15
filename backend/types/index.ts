@@ -1,3 +1,5 @@
+import { Document, Types } from 'mongoose';
+
 export interface IPlace {
   id: string;
   imageURL: string;
@@ -15,4 +17,16 @@ export interface ILocation {
 
 export interface TypedRequest<T> extends Express.Request {
   body: T;
+}
+
+export interface IPlaceModel extends Omit<IPlace, 'creator'> {
+  creator: Types.ObjectId;
+}
+
+export interface IUserModel extends Document {
+  name: string;
+  email: string;
+  password: string;
+  image: string;
+  places: Types.Array<Types.ObjectId>;
 }
