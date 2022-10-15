@@ -8,3 +8,4 @@
 - Remove body parser dependency and use the built in functions provided by Express 4.16+
 - Replace uuid dependency with nanoid - a much faster, leaner and more secure unique ID generator.
 - Modernized Backend to use ESModules instead of CommonJS
+- Typed the mongoose schema models to ensure data integrity.
