@@ -13,8 +13,15 @@ const USERS = [
   }
 ];
 
-const getUsers = (_: Request, res: Response) => {
-  res.json({ users: USERS });
+const getUsers = async (_: Request, res: Response, next: NextFunction) => {
+  try {
+    const users = await User.find({}, '-password');
+    res.json({ users: users.map(user => user.toObject({ getters: true })) });
+  } catch {
+    return next(
+      new HttpError('Fetching users failed, please try again later.', 500)
+    );
+  }
 };
 
 const signup = async (
