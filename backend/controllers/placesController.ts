@@ -2,9 +2,11 @@ import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import HttpError from '../models/httpError.js';
 import { ILocation, IPlace, TypedRequest } from '../types/index.js';
+import mongoose from 'mongoose';
 
 import { getCoordsForAddress } from '../utils/location.js';
 import Place from '../models/place.js';
+import User from '../models/user.js';
 
 let PLACES: IPlace[] = [
   {
@@ -114,12 +116,26 @@ const createPlace = async (
   });
 
   try {
-    await createdPlace.save();
-  } catch (error) {
+    const user = await User.findById(creator);
+    if (!user) {
+      return next(new HttpError('Could not find user for provided id.', 404));
+    }
+    try {
+      const sess = await mongoose.startSession();
+      sess.startTransaction();
+      await createdPlace.save({ session: sess });
+      user.places.push(createdPlace.id);
+      await user.save({ session: sess });
+      await sess.commitTransaction();
+      res.status(201).json({ place: createdPlace });
+    } catch (error) {
+      return next(
+        new HttpError('Creating place failed, please try again.', 500)
+      );
+    }
+  } catch {
     return next(new HttpError('Creating place failed, please try again.', 500));
   }
-
-  res.status(201).json({ place: createdPlace });
 };
 
 const updatePlace = async (req: Request, res: Response, next: NextFunction) => {
