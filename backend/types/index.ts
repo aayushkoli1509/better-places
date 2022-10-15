@@ -19,7 +19,7 @@ export interface TypedRequest<T> extends Express.Request {
   body: T;
 }
 
-export interface IPlaceModel extends Omit<IPlace, 'creator'> {
+export interface IPlaceModel extends Document, Omit<IPlace, 'creator' | 'id'> {
   creator: Types.ObjectId;
 }
 

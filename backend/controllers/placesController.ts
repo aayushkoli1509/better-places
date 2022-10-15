@@ -1,7 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import HttpError from '../models/httpError.js';
-import { ILocation, IPlace, IUserModel, TypedRequest } from '../types/index.js';
+import {
+  ILocation,
+  IPlace,
+  IPlaceModel,
+  IUserModel,
+  TypedRequest
+} from '../types/index.js';
 import mongoose from 'mongoose';
 
 import { getCoordsForAddress } from '../utils/location.js';
@@ -61,14 +67,20 @@ const getPlacesByUserId = async (
 ) => {
   const userId = req.params.uid;
   try {
-    const places = await Place.find({ creator: userId });
-    if (!places.length) {
+    const userWithPlaces = await User.findById(userId).populate<{
+      places: IPlaceModel[];
+    }>('places');
+
+    if (!userWithPlaces || !userWithPlaces.places.length) {
       return next(
         new HttpError('Could not find a place for the provided user id.', 404)
       );
     }
+
     res.json({
-      places: places.map(place => place.toObject({ getters: true }))
+      places: userWithPlaces.places.map(place =>
+        place.toObject({ getters: true })
+      )
     });
   } catch (error) {
     return next(
