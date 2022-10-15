@@ -29,7 +29,6 @@ const signup = async (
     name: string;
     email: string;
     password: string;
-    places: string;
   }>,
   res: Response,
   next: NextFunction
@@ -40,7 +39,7 @@ const signup = async (
       new HttpError('Invalid inputs passed, please check your data.', 422)
     );
   }
-  const { name, email, password, places } = req.body;
+  const { name, email, password } = req.body;
   try {
     if (await User.findOne({ email })) {
       return next(
@@ -51,9 +50,9 @@ const signup = async (
     const createdUser = new User({
       name,
       email,
-      image: 'https://picsum.photos/200',
+      image: `https://ui-avatars.com/api/?background=random&name=${name}`,
       password,
-      places
+      places: []
     });
 
     try {
