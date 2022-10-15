@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
+
 import { IUserModel } from '../types';
 
 const Schema = mongoose.Schema;

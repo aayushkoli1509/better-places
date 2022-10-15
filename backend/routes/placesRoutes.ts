@@ -1,12 +1,13 @@
 import express from 'express';
+import { check } from 'express-validator';
+
 import {
+  createPlace,
+  deletePlace,
   getPlaceById,
   getPlacesByUserId,
-  createPlace,
-  updatePlace,
-  deletePlace
+  updatePlace
 } from '../controllers/placesController.js';
-import { check } from 'express-validator';
 
 const router = express.Router();
 

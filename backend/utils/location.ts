@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import HttpError from '../models/httpError.js';
 
 export const getCoordsForAddress = async (address: string) => {

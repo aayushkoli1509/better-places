@@ -1,17 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import HttpError from '../models/httpError.js';
-import { TypedRequest } from '../types';
 import { validationResult } from 'express-validator';
-import User from '../models/user.js';
 
-const USERS = [
-  {
-    id: 'u1',
-    name: 'Mubin',
-    email: 'test@test.com',
-    password: 'test'
-  }
-];
+import HttpError from '../models/httpError.js';
+import User from '../models/user.js';
+import { TypedRequest } from '../types';
 
 const getUsers = async (_: Request, res: Response, next: NextFunction) => {
   try {

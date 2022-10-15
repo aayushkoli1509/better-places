@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 import { IPlaceModel } from '../types';
 
 const Schema = mongoose.Schema;

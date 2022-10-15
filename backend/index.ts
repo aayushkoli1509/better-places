@@ -1,10 +1,10 @@
-import express, { ErrorRequestHandler, Express } from 'express';
 import dotenv from 'dotenv';
+import express, { ErrorRequestHandler, Express } from 'express';
 import mongoose from 'mongoose';
 
+import HttpError from './models/httpError.js';
 import placesRoutes from './routes/placesRoutes.js';
 import usersRoutes from './routes/usersRoutes.js';
-import HttpError from './models/httpError.js';
 
 dotenv.config();
 
