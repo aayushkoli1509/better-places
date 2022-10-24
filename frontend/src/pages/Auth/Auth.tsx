@@ -1,15 +1,14 @@
 import './Auth.css';
-import Input from '@components/shared/Input';
-import useForm from '@hooks/formHook';
-import {
-  VALIDATOR_EMAIL,
-  VALIDATOR_MINLENGTH,
-  VALIDATOR_REQUIRE
-} from '@utils/validators';
-import Card from '@components/shared/Card';
-import Button from '@components/shared/Button';
+
+import axios from 'axios';
 import { useContext, useState } from 'react';
+
+import Button from '@components/shared/Button';
+import Card from '@components/shared/Card';
+import Input from '@components/shared/Input';
 import { AuthContext } from '@context/authContext';
+import useForm from '@hooks/formHook';
+import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from '@utils/validators';
 
 const Auth = () => {
   const [formState, inputHandler, setFormData] = useForm(
@@ -29,9 +28,36 @@ const Auth = () => {
 
   const auth = useContext(AuthContext);
 
-  const authSubmitHandler = (event: React.FormEvent) => {
+  const authSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(formState.inputs);
+    if (isLoginMode) {
+    } else {
+      const response = await axios.post<{
+        message?: string;
+        user?: {
+          name: string;
+          email: string;
+          password: string;
+          image: string;
+          places: any[];
+          id: string;
+        };
+      }>(
+        'http://localhost:5000/api/users/signup',
+        {
+          name: formState.inputs.name.value,
+          email: formState.inputs.email.value,
+          password: formState.inputs.password.value
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      const responseData = response.data;
+    }
+
     auth.login();
   };
 
@@ -92,7 +118,7 @@ const Auth = () => {
           validators={[VALIDATOR_MINLENGTH(6)]}
           onInput={inputHandler}
         />
-        <Button disabled={!formState.isValid}>
+        <Button disabled={!formState.isValid} type='submit'>
           {isLoginMode ? 'LOGIN' : 'SIGNUP'}
         </Button>
       </form>
