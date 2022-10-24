@@ -26,3 +26,15 @@ export interface IValidator {
 }
 
 export type IValidatorFunction = () => IValidator;
+
+export interface ISignUpResponse {
+  message?: string;
+  user?: {
+    name: string;
+    email: string;
+    password: string;
+    image: string;
+    places: any[];
+    id: string;
+  };
+}

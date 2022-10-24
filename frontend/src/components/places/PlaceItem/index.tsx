@@ -1,14 +1,13 @@
 import './index.css';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import Button from '@components/shared/Button';
 import Card from '@components/shared/Card';
 import Map from '@components/shared/Map';
 import Modal from '@components/shared/Modal';
-import { ILocation } from '@types';
-import { useContext } from 'react';
 import { AuthContext } from '@context/authContext';
+import { ILocation } from '@types';
 
 interface IProps {
   id: string;
