@@ -27,8 +27,10 @@ export interface IValidator {
 
 export type IValidatorFunction = () => IValidator;
 
-export interface ISignUpResponse {
+export interface IResponse {
   message?: string;
+}
+export interface ISignUpResponse extends IResponse {
   user?: {
     name: string;
     email: string;
@@ -38,3 +40,5 @@ export interface ISignUpResponse {
     id: string;
   };
 }
+
+export interface ILoginResponse extends IResponse {}

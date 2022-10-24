@@ -10,7 +10,7 @@ import Input from '@components/shared/Input';
 import LoadingSpinner from '@components/shared/LoadingSpinner';
 import { AuthContext } from '@context/authContext';
 import useForm from '@hooks/formHook';
-import { ISignUpResponse } from '@types';
+import { ILoginResponse, ISignUpResponse } from '@types';
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from '@utils/validators';
 
 const Auth = () => {
@@ -36,10 +36,26 @@ const Auth = () => {
 
   const authSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (isLoginMode) {
-    } else {
-      setIsLoading(true);
-      try {
+    setIsLoading(true);
+
+    try {
+      if (isLoginMode) {
+        const response = await axios.post<ILoginResponse>(
+          'http://localhost:5000/api/users/login',
+          {
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        const responseData = response.data;
+        setIsLoading(false);
+        auth.login();
+      } else {
         const response = await axios.post<ISignUpResponse>(
           'http://localhost:5000/api/users/signup',
           {
@@ -54,18 +70,15 @@ const Auth = () => {
           }
         );
         const responseData = response.data;
-        console.log(responseData);
         setIsLoading(false);
         auth.login();
-      } catch (_err) {
-        const err = _err as { response: { data: { message?: string } } };
-        setIsLoading(false);
-        setError(
-          err?.response.data.message! ||
-            'Something went wrong, please try again.'
-        );
-        console.log(err.response.data.message);
       }
+    } catch (_err) {
+      const err = _err as { response: { data: { message?: string } } };
+      setIsLoading(false);
+      setError(
+        err?.response.data.message! || 'Something went wrong, please try again.'
+      );
     }
   };
 
