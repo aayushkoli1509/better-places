@@ -2,7 +2,9 @@ export interface IUser {
   name: string;
   id: string;
   image: string;
-  places: number;
+  email: string;
+  password: string;
+  places: any[];
 }
 
 export interface IPlace {
@@ -28,17 +30,14 @@ export interface IValidator {
 export type IValidatorFunction = () => IValidator;
 
 export interface IResponse {
-  message?: string;
+  message: string;
 }
-export interface ISignUpResponse extends IResponse {
-  user?: {
-    name: string;
-    email: string;
-    password: string;
-    image: string;
-    places: any[];
-    id: string;
-  };
+export interface ISignUpResponse {
+  user: IUser;
 }
 
 export interface ILoginResponse extends IResponse {}
+
+export interface IGetUsersResponse {
+  users: IUser[];
+}
