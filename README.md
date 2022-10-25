@@ -9,3 +9,5 @@
 - Replace uuid dependency with nanoid - a much faster, leaner and more secure unique ID generator.
 - Modernized Backend to use ESModules instead of CommonJS
 - Typed the mongoose schema models to ensure data integrity.
+- Use Axios to fetch API data instead of built in fetch.
+- Use Type Generics to properly type the custom http hook response.
