@@ -4,7 +4,7 @@ export interface IUser {
   image: string;
   email: string;
   password: string;
-  places: any[];
+  places: string[];
 }
 
 export interface IPlace {
@@ -16,7 +16,6 @@ export interface IPlace {
   creator: string;
   location: ILocation;
 }
-
 export interface ILocation {
   lat: number;
   lng: number;
@@ -38,4 +37,8 @@ export interface IAuthResponse {
 
 export interface IGetUsersResponse {
   users: IUser[];
+}
+
+export interface IGetUsersPlacesResponse {
+  places: IPlace[];
 }
