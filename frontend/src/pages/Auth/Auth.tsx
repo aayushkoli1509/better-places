@@ -10,8 +10,13 @@ import Input from '@components/shared/Input';
 import LoadingSpinner from '@components/shared/LoadingSpinner';
 import { AuthContext } from '@context/authContext';
 import useForm from '@hooks/formHook';
+import { useHttpClient } from '@hooks/httpHook';
 import { ILoginResponse, ISignUpResponse } from '@types';
-import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from '@utils/validators';
+import {
+  VALIDATOR_EMAIL,
+  VALIDATOR_MINLENGTH,
+  VALIDATOR_REQUIRE
+} from '@utils/validators';
 
 const Auth = () => {
   const [formState, inputHandler, setFormData] = useForm(
@@ -28,58 +33,41 @@ const Auth = () => {
     false
   );
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient<
+    ILoginResponse | ISignUpResponse
+  >();
 
   const auth = useContext(AuthContext);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<null | string>(null);
-
   const authSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    setIsLoading(true);
 
     try {
       if (isLoginMode) {
-        const response = await axios.post<ILoginResponse>(
+        await sendRequest(
           'http://localhost:5000/api/users/login',
+          'POST',
           {
             email: formState.inputs.email.value,
             password: formState.inputs.password.value
           },
-          {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          }
+          { 'Content-Type': 'application/json' }
         );
-        const responseData = response.data;
-        setIsLoading(false);
         auth.login();
       } else {
-        const response = await axios.post<ISignUpResponse>(
+        await sendRequest(
           'http://localhost:5000/api/users/signup',
+          'POST',
           {
             name: formState.inputs.name.value,
             email: formState.inputs.email.value,
             password: formState.inputs.password.value
           },
-          {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          }
+          { 'Content-Type': 'application/json' }
         );
-        const responseData = response.data;
-        setIsLoading(false);
         auth.login();
       }
-    } catch (_err) {
-      const err = _err as { response: { data: { message?: string } } };
-      setIsLoading(false);
-      setError(
-        err?.response.data.message! || 'Something went wrong, please try again.'
-      );
-    }
+    } catch (err) {}
   };
 
   const switchModeHandler = () => {
@@ -107,7 +95,7 @@ const Auth = () => {
 
   return (
     <>
-      {error && <ErrorModal error={error} onClear={() => setError(null)} />}
+      {error && <ErrorModal error={error} onClear={clearError} />}
       <Card className='authentication'>
         {isLoading && <LoadingSpinner asOverlay />}
         <h2>{isLoginMode ? 'Login' : 'Signup'}</h2>

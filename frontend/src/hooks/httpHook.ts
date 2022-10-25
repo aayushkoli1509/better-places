@@ -11,7 +11,7 @@ export function useHttpClient<T>() {
     async (
       url: string,
       method = 'GET',
-      body: null | BodyInit = null,
+      body: null | {} = null,
       headers: { [key: string]: any } = {}
     ) => {
       setIsLoading(true);
@@ -28,6 +28,9 @@ export function useHttpClient<T>() {
         });
 
         const responseData = response.data;
+        activeHttpRequests.current = activeHttpRequests.current.filter(
+          reqCtrl => reqCtrl !== httpAbortCtrl
+        );
         setIsLoading(false);
         return responseData;
       } catch (_err) {
