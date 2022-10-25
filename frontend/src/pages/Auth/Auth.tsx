@@ -1,6 +1,5 @@
 import './Auth.css';
 
-import axios from 'axios';
 import { useContext, useState } from 'react';
 
 import Button from '@components/shared/Button';
