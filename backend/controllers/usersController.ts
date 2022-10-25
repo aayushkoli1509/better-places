@@ -79,7 +79,7 @@ const login = async (
         )
       );
     }
-    res.json({ message: 'Logged in!' });
+    res.status(201).json({ user: identifiedUser.toObject({ getters: true }) });
   } catch {
     return next(new HttpError('Logging in failed, please try again.', 500));
   }

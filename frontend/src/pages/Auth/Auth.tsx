@@ -10,7 +10,7 @@ import LoadingSpinner from '@components/shared/LoadingSpinner';
 import { AuthContext } from '@context/authContext';
 import useForm from '@hooks/formHook';
 import { useHttpClient } from '@hooks/httpHook';
-import { ILoginResponse, ISignUpResponse } from '@types';
+import { IAuthResponse } from '@types';
 import {
   VALIDATOR_EMAIL,
   VALIDATOR_MINLENGTH,
@@ -32,9 +32,8 @@ const Auth = () => {
     false
   );
   const [isLoginMode, setIsLoginMode] = useState(true);
-  const { isLoading, error, sendRequest, clearError } = useHttpClient<
-    ILoginResponse | ISignUpResponse
-  >();
+  const { isLoading, error, sendRequest, clearError } =
+    useHttpClient<IAuthResponse>();
 
   const auth = useContext(AuthContext);
 
@@ -43,7 +42,7 @@ const Auth = () => {
 
     try {
       if (isLoginMode) {
-        await sendRequest(
+        const responseData = await sendRequest(
           'http://localhost:5000/api/users/login',
           'POST',
           {
@@ -52,9 +51,9 @@ const Auth = () => {
           },
           { 'Content-Type': 'application/json' }
         );
-        auth.login();
+        auth.login(responseData.user.id);
       } else {
-        await sendRequest(
+        const responseData = await sendRequest(
           'http://localhost:5000/api/users/signup',
           'POST',
           {
@@ -64,7 +63,7 @@ const Auth = () => {
           },
           { 'Content-Type': 'application/json' }
         );
-        auth.login();
+        auth.login(responseData.user.id);
       }
     } catch (err) {}
   };

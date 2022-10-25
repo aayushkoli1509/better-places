@@ -32,11 +32,9 @@ export type IValidatorFunction = () => IValidator;
 export interface IResponse {
   message: string;
 }
-export interface ISignUpResponse {
+export interface IAuthResponse {
   user: IUser;
 }
-
-export interface ILoginResponse extends IResponse {}
 
 export interface IGetUsersResponse {
   users: IUser[];

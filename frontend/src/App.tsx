@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import {
   BrowserRouter as Router,
   Navigate,
@@ -6,23 +7,25 @@ import {
 } from 'react-router-dom';
 
 import Navigation from '@components/shared/Navigation';
+import { AuthContext } from '@context/authContext';
+import Auth from '@pages/Auth/Auth';
 import NewPlace from '@pages/NewPlace';
+import UpdatePlace from '@pages/UpdatePlace';
 import UserPlaces from '@pages/UserPlaces';
 import Users from '@pages/Users';
-import UpdatePlace from '@pages/UpdatePlace';
-import Auth from '@pages/Auth/Auth';
-import { AuthContext } from '@context/authContext';
-import { useCallback, useState } from 'react';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
 
-  const login = useCallback(() => {
+  const login = useCallback((uid: string) => {
     setIsLoggedIn(true);
+    setUserId(uid);
   }, []);
 
   const logout = useCallback(() => {
     setIsLoggedIn(false);
+    setUserId(null);
   }, []);
 
   let routes;
@@ -49,7 +52,7 @@ const App = () => {
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, userId, login, logout }}>
       <Router>
         <Navigation />
         <main>
