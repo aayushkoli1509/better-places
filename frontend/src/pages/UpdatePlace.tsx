@@ -1,13 +1,14 @@
 import './NewPlace/index.css';
 
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Button from '@components/shared/Button';
 import Card from '@components/shared/Card';
 import ErrorModal from '@components/shared/ErrorModal';
 import Input from '@components/shared/Input';
 import LoadingSpinner from '@components/shared/LoadingSpinner';
+import { AuthContext } from '@context/authContext';
 import useForm from '@hooks/formHook';
 import { useHttpClient } from '@hooks/httpHook';
 import { IGetPlaceResponse, IPlace } from '@types';
@@ -18,6 +19,8 @@ const UpdatePlace = () => {
     useHttpClient<IGetPlaceResponse>();
   const [loadedPlace, setLoadedPlace] = useState<IPlace>();
   const placeId = useParams<{ placeId: string }>().placeId;
+  const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -58,9 +61,20 @@ const UpdatePlace = () => {
     fetchPlace();
   }, [sendRequest, placeId, setFormData]);
 
-  const placeUpdateSubmitHandler = (event: React.FormEvent) => {
+  const placeUpdateSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(formState.inputs);
+    try {
+      await sendRequest(
+        `http://localhost:5000/api/places/${placeId}`,
+        'PATCH',
+        {
+          title: formState.inputs.title.value,
+          description: formState.inputs.description.value
+        },
+        { 'Content-Type': 'application/json' }
+      );
+      navigate(`/${authContext.userId}/places`);
+    } catch (err) {}
   };
 
   if (isLoading) {
