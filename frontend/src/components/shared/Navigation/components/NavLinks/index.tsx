@@ -1,8 +1,9 @@
+import './index.css';
+
+import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import './index.css';
 import { AuthContext } from '@context/authContext';
-import { useContext } from 'react';
 
 const NavLinks = () => {
   const auth = useContext(AuthContext);
@@ -14,7 +15,7 @@ const NavLinks = () => {
       {auth.isLoggedIn && (
         <>
           <li>
-            <NavLink to='/u1/places'>MY PLACES</NavLink>
+            <NavLink to={`/${auth.userId}/places`}>MY PLACES</NavLink>
           </li>
           <li>
             <NavLink to='/places/new'>ADD PLACE</NavLink>
