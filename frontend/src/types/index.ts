@@ -42,3 +42,7 @@ export interface IGetUsersResponse {
 export interface IGetUsersPlacesResponse {
   places: IPlace[];
 }
+
+export interface IGetPlaceResponse {
+  place: IPlace;
+}
