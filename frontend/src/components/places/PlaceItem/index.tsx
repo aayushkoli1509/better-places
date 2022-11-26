@@ -103,7 +103,7 @@ const PlaceItem: React.FC<IProps> = ({
             <Button inverse onClick={openMapHandler}>
               VIEW ON MAP
             </Button>
-            {auth.isLoggedIn && (
+            {auth.isLoggedIn && creatorId === auth.userId && (
               <>
                 <Button to={`/places/${id}`}>EDIT</Button>
                 <Button danger onClick={showDeleteWarningHandler}>
