@@ -4,9 +4,12 @@ import { useContext, useState } from 'react';
 
 import Button from '@components/shared/Button';
 import Card from '@components/shared/Card';
+import ErrorModal from '@components/shared/ErrorModal';
+import LoadingSpinner from '@components/shared/LoadingSpinner';
 import Map from '@components/shared/Map';
 import Modal from '@components/shared/Modal';
 import { AuthContext } from '@context/authContext';
+import { useHttpClient } from '@hooks/httpHook';
 import { ILocation } from '@types';
 
 interface IProps {
@@ -17,6 +20,7 @@ interface IProps {
   address: string;
   creatorId: string;
   coordinates: ILocation;
+  onDelete: (pid: string) => void;
 }
 
 const PlaceItem: React.FC<IProps> = ({
@@ -26,8 +30,10 @@ const PlaceItem: React.FC<IProps> = ({
   description,
   address,
   creatorId,
-  coordinates
+  coordinates,
+  onDelete
 }) => {
+  const { error, isLoading, sendRequest, clearError } = useHttpClient();
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const auth = useContext(AuthContext);
@@ -38,13 +44,17 @@ const PlaceItem: React.FC<IProps> = ({
   const showDeleteWarningHandler = () => setShowConfirmModal(true);
   const cancelDeleteWarningHandler = () => setShowConfirmModal(false);
 
-  const confirmDeleteHandler = () => {
-    console.log('Deleting...');
-    cancelDeleteWarningHandler();
+  const confirmDeleteHandler = async () => {
+    setShowConfirmModal(false);
+    try {
+      await sendRequest(`http://localhost:5000/api/places/${id}`, 'DELETE');
+      onDelete(id);
+    } catch (err) {}
   };
 
   return (
     <>
+      {error && <ErrorModal error={error} onClear={clearError} />}
       <Modal
         show={showMap}
         onCancel={closeMapHandler}
@@ -80,6 +90,7 @@ const PlaceItem: React.FC<IProps> = ({
       </Modal>
       <li className='place-item'>
         <Card className='place-item__content'>
+          {isLoading && <LoadingSpinner asOverlay />}
           <div className='place-item__image'>
             <img src={image} alt={title} />
           </div>

@@ -3,14 +3,15 @@ import './index.css';
 import Card from '@components/shared/Card';
 import { IPlace } from '@types';
 
-import PlaceItem from '../PlaceItem';
 import Button from '../../shared/Button';
+import PlaceItem from '../PlaceItem';
 
 interface IProps {
   items: IPlace[];
+  onDeletePlace: (placeId: string) => void;
 }
 
-const PlaceList: React.FC<IProps> = ({ items }) => {
+const PlaceList: React.FC<IProps> = ({ items, onDeletePlace }) => {
   if (items.length === 0) {
     return (
       <div className='place-list center'>
@@ -33,6 +34,7 @@ const PlaceList: React.FC<IProps> = ({ items }) => {
           address={place.address}
           creatorId={place.creator}
           coordinates={place.location}
+          onDelete={onDeletePlace}
         />
       ))}
     </ul>
