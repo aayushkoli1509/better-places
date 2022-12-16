@@ -70,6 +70,7 @@ const createPlace = async (
     coordinates: ILocation;
     address: string;
     creator: string;
+    file: Express.Multer.File;
   }>,
   res: Response,
   next: NextFunction
@@ -97,8 +98,7 @@ const createPlace = async (
     location: coordinates,
     address,
     creator,
-    imageURL:
-      'https://media.cntraveler.com/photos/58d2b8c7ed5947303561e5f3/master/w_1920%2Cc_limit/ashikaga-flower-park-wisteria-GettyImages-473675978.jpg'
+    imageURL: req.file!.path
   });
 
   try {

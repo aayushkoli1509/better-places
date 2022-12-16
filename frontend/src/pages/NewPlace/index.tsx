@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from '@components/shared/Button';
 import ErrorModal from '@components/shared/ErrorModal';
+import ImageUpload from '@components/shared/ImageUpload';
 import Input from '@components/shared/Input';
 import LoadingSpinner from '@components/shared/LoadingSpinner';
 import { AuthContext } from '@context/authContext';
@@ -26,6 +27,10 @@ const NewPlace = () => {
       address: {
         value: '',
         isValid: false
+      },
+      image: {
+        value: null,
+        isValid: false
       }
     },
     false
@@ -38,18 +43,18 @@ const NewPlace = () => {
 
   const placeSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
+    const formData = new FormData();
+    formData.append('title', formState.inputs.title.value as string);
+    formData.append(
+      'description',
+      formState.inputs.description.value as string
+    );
+    formData.append('address', formState.inputs.address.value as string);
+    formData.append('image', formState.inputs.image.value as File);
+    formData.append('creator', auth.userId as string);
+
     try {
-      await sendRequest(
-        'http://localhost:5000/api/places',
-        'POST',
-        {
-          title: formState.inputs.title.value,
-          description: formState.inputs.description.value,
-          address: formState.inputs.address.value,
-          creator: auth.userId
-        },
-        { 'Content-Type': 'application/json' }
-      );
+      await sendRequest('http://localhost:5000/api/places', 'POST', formData);
       navigate('/');
     } catch (err) {}
   };
@@ -83,6 +88,12 @@ const NewPlace = () => {
           errorText='Please enter a valid address.'
           validators={[VALIDATOR_REQUIRE()]}
           onInput={inputHandler}
+        />
+        <ImageUpload
+          center
+          id='image'
+          onInput={inputHandler}
+          errorText='Please provide an image.'
         />
         <Button type='submit' disabled={!formState.isValid}>
           ADD PLACE

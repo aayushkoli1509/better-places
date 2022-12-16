@@ -6,9 +6,9 @@ import Button from '../Button';
 
 interface IProps {
   id: string;
-  name: string;
   onInput: (id: 'image', file: File | null, isValid: boolean) => void;
   errorText: string;
+  name?: string;
   center?: boolean;
 }
 
@@ -82,7 +82,7 @@ const ImageUpload: React.FC<IProps> = ({
       />
       <div className={`image-upload ${center && 'center'}`}>
         <div className='image-upload__preview'>
-          {previewUrl ? (
+          {previewUrl || isValid ? (
             <img src={previewUrl} alt='Preview' />
           ) : (
             <p>Please pick an image.</p>
