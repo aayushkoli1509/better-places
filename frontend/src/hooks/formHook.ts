@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from 'react';
+import { useCallback, useReducer } from 'react';
 
 enum EFormActionType {
   INPUT_CHANGE = 'INPUT_CHANGE',
@@ -8,9 +8,9 @@ enum EFormActionType {
 
 interface EFormAction {
   type: EFormActionType;
-  inputId?: 'title' | 'description' | 'address';
+  inputId?: 'title' | 'description' | 'address' | 'image';
   isValid?: boolean;
-  value?: string;
+  value?: string | File | null;
   inputs?: TInputs;
   formIsValid?: boolean;
   // validators?: IValidator[];
@@ -19,7 +19,7 @@ interface EFormAction {
 interface IFormState {
   inputs: {
     [key: string]: {
-      value: string;
+      value: string | null | File;
       isValid: boolean;
     };
   };
@@ -36,8 +36,9 @@ const formReducer = (state: IFormState, action: EFormAction): IFormState => {
         } else {
           isFormValid =
             isFormValid &&
-            state.inputs[inputId as 'title' | 'description' | 'address']
-              .isValid;
+            state.inputs[
+              inputId as 'title' | 'description' | 'address' | 'image'
+            ].isValid;
         }
       }
       return {
@@ -60,7 +61,7 @@ const formReducer = (state: IFormState, action: EFormAction): IFormState => {
 
 type TInputs = {
   [key: string]: {
-    value: string;
+    value: string | null | File;
     isValid: boolean;
   };
 };
@@ -73,8 +74,8 @@ const useForm = (initialInputs: TInputs, initialFormValidity: boolean) => {
 
   const inputHandler = useCallback(
     (
-      id: 'title' | 'description' | 'address',
-      value: string,
+      id: 'title' | 'description' | 'address' | 'image',
+      value: string | File | null,
       isValid: boolean
     ) => {
       dispatch({

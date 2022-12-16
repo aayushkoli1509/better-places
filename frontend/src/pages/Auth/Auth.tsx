@@ -5,6 +5,7 @@ import { useContext, useState } from 'react';
 import Button from '@components/shared/Button';
 import Card from '@components/shared/Card';
 import ErrorModal from '@components/shared/ErrorModal';
+import ImageUpload from '@components/shared/ImageUpload';
 import Input from '@components/shared/Input';
 import LoadingSpinner from '@components/shared/LoadingSpinner';
 import { AuthContext } from '@context/authContext';
@@ -72,6 +73,7 @@ const Auth = () => {
     if (!isLoginMode) {
       const formData = { ...formState.inputs };
       delete formData.name;
+      delete formData.image;
       setFormData(
         formData,
         formState.inputs.email.isValid && formState.inputs.password.isValid
@@ -82,6 +84,10 @@ const Auth = () => {
           ...formState.inputs,
           name: {
             value: '',
+            isValid: false
+          },
+          image: {
+            value: null,
             isValid: false
           }
         },
@@ -100,15 +106,24 @@ const Auth = () => {
         <hr />
         <form onSubmit={authSubmitHandler}>
           {!isLoginMode && (
-            <Input
-              element='input'
-              type='text'
-              id='name'
-              label='Your Name'
-              validators={[VALIDATOR_REQUIRE()]}
-              errorText='Please enter a name.'
-              onInput={inputHandler}
-            />
+            <>
+              <Input
+                element='input'
+                type='text'
+                id='name'
+                label='Your Name'
+                validators={[VALIDATOR_REQUIRE()]}
+                errorText='Please enter a name.'
+                onInput={inputHandler}
+              />
+              <ImageUpload
+                id='image'
+                name={formState.inputs.name.value as string}
+                onInput={inputHandler}
+                errorText='Please provide an image'
+                center
+              />
+            </>
           )}
           <Input
             type='email'
