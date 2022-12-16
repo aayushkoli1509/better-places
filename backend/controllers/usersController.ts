@@ -21,6 +21,7 @@ const signup = async (
     name: string;
     email: string;
     password: string;
+    file: Express.Multer.File;
   }>,
   res: Response,
   next: NextFunction
@@ -42,7 +43,7 @@ const signup = async (
     const createdUser = new User({
       name,
       email,
-      image: `https://ui-avatars.com/api/?background=random&name=${name}`,
+      image: req.file!.path,
       password,
       places: []
     });

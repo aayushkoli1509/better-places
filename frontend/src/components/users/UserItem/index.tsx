@@ -18,7 +18,10 @@ const UserItem = ({ id, name, image, placeCount }: IProps) => {
       <Card className='user-item__content'>
         <Link to={`/${id}/places`}>
           <div className='user-item__image'>
-            <Avatar image={image} alt={image} />
+            <Avatar
+              image={import.meta.env.VITE_BACKEND_URL + image}
+              alt={image}
+            />
           </div>
           <div className='user-item__info'>
             <h2>{name}</h2>

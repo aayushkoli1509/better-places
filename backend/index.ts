@@ -6,6 +6,9 @@ import HttpError from './models/httpError.js';
 import placesRoutes from './routes/placesRoutes.js';
 import usersRoutes from './routes/usersRoutes.js';
 
+import fs from 'fs';
+import path from 'path';
+
 dotenv.config();
 
 const app: Express = express();
@@ -28,6 +31,8 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded());
 
+app.use('/uploads/images', express.static(path.join('uploads', 'images')));
+
 app.use('/api/places', placesRoutes);
 app.use('/api/users', usersRoutes);
 
@@ -37,6 +42,11 @@ app.use(() => {
 });
 
 const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
+  if (req.file) {
+    fs.unlink(req.file.path, err => {
+      console.log(err);
+    });
+  }
   if (res.headersSent) {
     return next(error);
   }
