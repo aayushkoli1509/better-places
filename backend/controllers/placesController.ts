@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import mongoose from 'mongoose';
 
+import fs from 'fs';
 import HttpError from '../models/httpError.js';
 import Place from '../models/place.js';
 import User from '../models/user.js';
@@ -169,6 +170,9 @@ const deletePlace = async (req: Request, res: Response, next: NextFunction) => {
         new HttpError('Could not find a place for the provided place id.', 404)
       );
     }
+
+    const imagePath = place.imageURL;
+
     try {
       const sess = await mongoose.startSession();
       sess.startTransaction();
@@ -181,6 +185,11 @@ const deletePlace = async (req: Request, res: Response, next: NextFunction) => {
         new HttpError('Something went wrong, could not delete place.', 500)
       );
     }
+
+    fs.unlink(imagePath, err => {
+      console.log(err);
+    });
+
     res.status(200).json({ message: 'Deleted Place.' });
   } catch (error) {
     return next(
