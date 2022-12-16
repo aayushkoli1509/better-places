@@ -54,15 +54,15 @@ const Auth = () => {
         );
         auth.login(responseData.user.id);
       } else {
+        const formData = new FormData();
+        formData.append('name', formState.inputs.name.value as string);
+        formData.append('email', formState.inputs.email.value as string);
+        formData.append('password', formState.inputs.password.value as string);
+        formData.append('image', formState.inputs.image.value as File);
         const responseData = await sendRequest(
           'http://localhost:5000/api/users/signup',
           'POST',
-          {
-            name: formState.inputs.name.value,
-            email: formState.inputs.email.value,
-            password: formState.inputs.password.value
-          },
-          { 'Content-Type': 'application/json' }
+          formData
         );
         auth.login(responseData.user.id);
       }
