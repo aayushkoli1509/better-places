@@ -83,7 +83,7 @@ const createPlace = async (
     );
   }
 
-  const { title, description, address, creator } = req.body;
+  const { title, description, address } = req.body;
 
   let coordinates: ILocation;
 
@@ -98,12 +98,12 @@ const createPlace = async (
     description,
     location: coordinates,
     address,
-    creator,
+    creator: req.userData.userId,
     imageURL: req.file!.path
   });
 
   try {
-    const user = await User.findById(creator);
+    const user = await User.findById(req.userData.userId);
     if (!user) {
       return next(new HttpError('Could not find user for provided id.', 404));
     }
