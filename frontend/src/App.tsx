@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
 import {
-  BrowserRouter as Router,
   Navigate,
   Route,
+  BrowserRouter as Router,
   Routes
 } from 'react-router-dom';
 
@@ -15,22 +15,22 @@ import UserPlaces from '@pages/UserPlaces';
 import Users from '@pages/Users';
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
 
-  const login = useCallback((uid: string) => {
-    setIsLoggedIn(true);
+  const login = useCallback((uid: string, token: string) => {
+    setToken(token);
     setUserId(uid);
   }, []);
 
   const logout = useCallback(() => {
-    setIsLoggedIn(false);
+    setToken(null);
     setUserId(null);
   }, []);
 
   let routes;
 
-  if (isLoggedIn) {
+  if (token) {
     routes = (
       <>
         <Route path='/' element={<Users />} />
@@ -52,7 +52,9 @@ const App = () => {
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userId, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn: !!token, userId, token, login, logout }}
+    >
       <Router>
         <Navigation />
         <main>

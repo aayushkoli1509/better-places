@@ -32,7 +32,9 @@ export interface IResponse {
   message: string;
 }
 export interface IAuthResponse {
-  user: IUser;
+  userId: string;
+  email: string;
+  token: string;
 }
 
 export interface IGetUsersResponse {

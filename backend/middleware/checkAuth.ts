@@ -3,6 +3,9 @@ import jwt from 'jsonwebtoken';
 import HttpError from '../models/httpError.js';
 
 export default (req: Request, _: Response, next: NextFunction) => {
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
   try {
     if (!req.headers.authorization) {
       throw new Error('No authorization headers found');
