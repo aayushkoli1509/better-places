@@ -5,6 +5,9 @@ import HttpError from '../models/httpError.js';
 import User from '../models/user.js';
 import { TypedRequest } from '../types';
 
+import bcrypt from 'bcrypt';
+import { generateJWT } from '../utils/security.js';
+
 const getUsers = async (_: Request, res: Response, next: NextFunction) => {
   try {
     const users = await User.find({}, '-password');
@@ -39,12 +42,18 @@ const signup = async (
         new HttpError('Could not create user, email already exists.', 422)
       );
     }
+    let hashedPassword: string;
+    try {
+      hashedPassword = await bcrypt.hash(password, 12);
+    } catch (err) {
+      return next(new HttpError('Could not create user', 500));
+    }
 
     const createdUser = new User({
       name,
       email,
       image: req.file!.path,
-      password,
+      hashedPassword,
       places: []
     });
 
@@ -53,7 +62,11 @@ const signup = async (
     } catch {
       return next(new HttpError('Signing up failed, please try again.', 500));
     }
-    res.status(201).json({ user: createdUser.toObject({ getters: true }) });
+    const token = generateJWT(createdUser.id, createdUser.email, next);
+
+    res
+      .status(201)
+      .json({ userId: createdUser.id, email: createdUser.email, token });
   } catch (error) {
     return next(
       new HttpError('Signing up failed, please try again later.', 500)
@@ -72,7 +85,7 @@ const login = async (
   const { email, password } = req.body;
   try {
     const identifiedUser = await User.findOne({ email });
-    if (!identifiedUser || identifiedUser.password !== password) {
+    if (!identifiedUser) {
       return next(
         new HttpError(
           'Could not identify user, credentials seem to be wrong.',
@@ -80,7 +93,28 @@ const login = async (
         )
       );
     }
-    res.status(201).json({ user: identifiedUser.toObject({ getters: true }) });
+
+    let isValidPassword = false;
+    try {
+      isValidPassword = await bcrypt.compare(password, identifiedUser.password);
+    } catch (err) {
+      return next(
+        new HttpError('Could not log you in, please try again.', 500)
+      );
+    }
+
+    if (!isValidPassword) {
+      return next(
+        new HttpError(
+          'Could not identify user, credentials seem to be wrong.',
+          401
+        )
+      );
+    }
+
+    const token = generateJWT(identifiedUser.id, identifiedUser.email, next);
+
+    res.status(201).json({ userId: identifiedUser.id, email, token });
   } catch {
     return next(new HttpError('Logging in failed, please try again.', 500));
   }
