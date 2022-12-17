@@ -8,6 +8,7 @@ import {
   getPlacesByUserId,
   updatePlace
 } from '../controllers/placesController.js';
+import checkAuth from '../middleware/checkAuth.js';
 import fileUpload from '../middleware/fileUpload.js';
 
 const router = express.Router();
@@ -15,6 +16,8 @@ const router = express.Router();
 router.get('/:pid', getPlaceById);
 
 router.get('/user/:uid', getPlacesByUserId);
+
+router.use(checkAuth);
 
 router.post(
   '/',

@@ -9,6 +9,14 @@ import usersRoutes from './routes/usersRoutes.js';
 import fs from 'fs';
 import path from 'path';
 
+declare global {
+  namespace Express {
+    interface Request {
+      userData: { userId: string };
+    }
+  }
+}
+
 dotenv.config();
 
 const app: Express = express();
