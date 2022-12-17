@@ -89,7 +89,7 @@ const login = async (
       return next(
         new HttpError(
           'Could not identify user, credentials seem to be wrong.',
-          401
+          403
         )
       );
     }
@@ -107,7 +107,7 @@ const login = async (
       return next(
         new HttpError(
           'Could not identify user, credentials seem to be wrong.',
-          401
+          403
         )
       );
     }
