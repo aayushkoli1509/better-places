@@ -53,7 +53,7 @@ const signup = async (
       name,
       email,
       image: req.file!.path,
-      hashedPassword,
+      password: hashedPassword,
       places: []
     });
 

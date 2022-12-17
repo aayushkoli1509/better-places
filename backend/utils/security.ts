@@ -1,6 +1,6 @@
 import { NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import HttpError from '../models/httpError';
+import HttpError from '../models/httpError.js';
 
 export const generateJWT = (
   userId: string,

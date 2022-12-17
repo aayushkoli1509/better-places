@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import HttpError from '../models/httpError';
+import HttpError from '../models/httpError.js';
 
 export default (req: Request, _: Response, next: NextFunction) => {
   try {
