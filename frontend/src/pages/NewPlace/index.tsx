@@ -53,9 +53,14 @@ const NewPlace = () => {
     formData.append('image', formState.inputs.image.value as File);
 
     try {
-      await sendRequest('http://localhost:5000/api/places', 'POST', formData, {
-        Authorization: `Bearer ${auth.token}`
-      });
+      await sendRequest(
+        `${import.meta.env.VITE_BACKEND_URL}/places`,
+        'POST',
+        formData,
+        {
+          Authorization: `Bearer ${auth.token}`
+        }
+      );
       navigate('/');
     } catch (err) {}
   };

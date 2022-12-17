@@ -48,7 +48,7 @@ const PlaceItem: React.FC<IProps> = ({
     setShowConfirmModal(false);
     try {
       await sendRequest(
-        `http://localhost:5000/api/places/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/places/${id}`,
         'DELETE',
         null,
         { Authorization: `Bearer ${auth.token}` }
@@ -97,7 +97,10 @@ const PlaceItem: React.FC<IProps> = ({
         <Card className='place-item__content'>
           {isLoading && <LoadingSpinner asOverlay />}
           <div className='place-item__image'>
-            <img src={import.meta.env.VITE_BACKEND_URL + image} alt={title} />
+            <img
+              src={`${import.meta.env.VITE_ASSETS_URL}/${image}`}
+              alt={title}
+            />
           </div>
           <div className='place-item__info'>
             <h2>{title}</h2>

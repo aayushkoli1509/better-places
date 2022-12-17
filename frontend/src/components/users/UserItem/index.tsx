@@ -19,7 +19,7 @@ const UserItem = ({ id, name, image, placeCount }: IProps) => {
         <Link to={`/${id}/places`}>
           <div className='user-item__image'>
             <Avatar
-              image={import.meta.env.VITE_BACKEND_URL + image}
+              image={`${import.meta.env.VITE_ASSETS_URL}/${image}`}
               alt={image}
             />
           </div>
