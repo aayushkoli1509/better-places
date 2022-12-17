@@ -23,6 +23,11 @@ const app: Express = express();
 
 const port = process.env.PORT;
 
+if (!fs.existsSync(path.join('uploads', 'images'))) {
+  fs.mkdirSync(path.join('uploads'));
+  fs.mkdirSync(path.join('uploads', 'images'));
+}
+
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
