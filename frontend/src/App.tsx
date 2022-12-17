@@ -5,14 +5,17 @@ import {
   Routes
 } from 'react-router-dom';
 
+import LoadingSpinner from '@components/shared/LoadingSpinner';
 import Navigation from '@components/shared/Navigation';
 import { AuthContext } from '@context/authContext';
 import { useAuth } from '@hooks/authHook';
-import Auth from '@pages/Auth/Auth';
-import NewPlace from '@pages/NewPlace';
-import UpdatePlace from '@pages/UpdatePlace';
-import UserPlaces from '@pages/UserPlaces';
-import Users from '@pages/Users';
+import { Suspense, lazy } from 'react';
+
+const Users = lazy(() => import('@pages/Users'));
+const UserPlaces = lazy(() => import('@pages/UserPlaces'));
+const UpdatePlace = lazy(() => import('@pages/UpdatePlace'));
+const NewPlace = lazy(() => import('@pages/NewPlace'));
+const Auth = lazy(() => import('@pages/Auth/Auth'));
 
 const App = () => {
   const { token, login, logout, userId } = useAuth();
@@ -46,7 +49,15 @@ const App = () => {
       <Router>
         <Navigation />
         <main>
-          <Routes>{routes}</Routes>
+          <Suspense
+            fallback={
+              <div className='center'>
+                <LoadingSpinner />
+              </div>
+            }
+          >
+            <Routes>{routes}</Routes>
+          </Suspense>
         </main>
       </Router>
     </AuthContext.Provider>
