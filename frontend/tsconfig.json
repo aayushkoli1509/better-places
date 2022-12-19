@@ -23,8 +23,7 @@
       "@hooks/*": ["./src/hooks/*"],
       "@context/*": ["./src/context/*"],
       "@styles/*": ["./src/styles/*"]
-    },
-    "plugins": [{ "name": "typescript-plugin-css-modules" }]
+    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
