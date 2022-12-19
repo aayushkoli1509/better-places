@@ -1,4 +1,4 @@
-import '@styles/NewPlace.css';
+import styles from '@styles/NewPlace.module.css';
 
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -102,7 +102,7 @@ const UpdatePlace = () => {
     <>
       {error && <ErrorModal error={error} onClear={clearError} />}
       {!isLoading && loadedPlace && (
-        <form className='place-form' onSubmit={placeUpdateSubmitHandler}>
+        <form className={styles.placeForm} onSubmit={placeUpdateSubmitHandler}>
           <Input
             id='title'
             element='input'
