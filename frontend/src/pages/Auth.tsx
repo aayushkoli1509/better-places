@@ -1,4 +1,4 @@
-import '@styles/Auth.css';
+import styles from '@styles/Auth.module.css';
 
 import { useContext, useState } from 'react';
 
@@ -100,7 +100,7 @@ const Auth = () => {
   return (
     <>
       {error && <ErrorModal error={error} onClear={clearError} />}
-      <Card className='authentication'>
+      <Card className={styles.authentication}>
         {isLoading && <LoadingSpinner asOverlay />}
         <h2>{isLoginMode ? 'Login' : 'Signup'}</h2>
         <hr />
@@ -115,6 +115,7 @@ const Auth = () => {
                 validators={[VALIDATOR_REQUIRE()]}
                 errorText='Please enter a name.'
                 onInput={inputHandler}
+                placeholder='Rick Rollins'
               />
               <ImageUpload
                 id='image'
@@ -133,6 +134,7 @@ const Auth = () => {
             errorText='Please enter a valid email.'
             validators={[VALIDATOR_EMAIL()]}
             onInput={inputHandler}
+            placeholder='rickroll@example.com'
           />
           <Input
             type='password'
@@ -142,6 +144,7 @@ const Auth = () => {
             errorText='Please enter a valid password (at least 6 characters).'
             validators={[VALIDATOR_MINLENGTH(6)]}
             onInput={inputHandler}
+            placeholder='********'
           />
           <Button disabled={!formState.isValid} type='submit'>
             {isLoginMode ? 'LOGIN' : 'SIGNUP'}
