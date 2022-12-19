@@ -1,4 +1,4 @@
-import './NewPlace/index.css';
+import '@styles/NewPlace.css';
 
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
