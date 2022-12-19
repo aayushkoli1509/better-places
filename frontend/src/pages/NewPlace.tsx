@@ -1,4 +1,4 @@
-import styles from '@styles/NewPlace.module.css';
+import '@styles/NewPlace.css';
 
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -68,7 +68,7 @@ const NewPlace = () => {
   return (
     <>
       {error && <ErrorModal error={error} onClear={clearError} />}
-      <form className={styles.placeForm} onSubmit={placeSubmitHandler}>
+      <form className='place-form' onSubmit={placeSubmitHandler}>
         {isLoading && <LoadingSpinner asOverlay />}
         <Input
           type='text'
