@@ -115,14 +115,9 @@ const Auth = () => {
                 validators={[VALIDATOR_REQUIRE()]}
                 errorText='Please enter a name.'
                 onInput={inputHandler}
+                placeholder='Rick Rollins'
               />
-              <ImageUpload
-                id='image'
-                name={formState.inputs.name.value as string}
-                onInput={inputHandler}
-                errorText='Please provide an image'
-                center
-              />
+              <ImageUpload id='image' onInput={inputHandler} center />
             </>
           )}
           <Input
@@ -133,6 +128,7 @@ const Auth = () => {
             errorText='Please enter a valid email.'
             validators={[VALIDATOR_EMAIL()]}
             onInput={inputHandler}
+            placeholder='rickroll@example.com'
           />
           <Input
             type='password'
@@ -142,6 +138,7 @@ const Auth = () => {
             errorText='Please enter a valid password (at least 6 characters).'
             validators={[VALIDATOR_MINLENGTH(6)]}
             onInput={inputHandler}
+            placeholder='********'
           />
           <Button disabled={!formState.isValid} type='submit'>
             {isLoginMode ? 'LOGIN' : 'SIGNUP'}

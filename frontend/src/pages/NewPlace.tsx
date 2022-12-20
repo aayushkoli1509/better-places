@@ -95,15 +95,12 @@ const NewPlace = () => {
           validators={[VALIDATOR_REQUIRE()]}
           onInput={inputHandler}
         />
-        <ImageUpload
-          center
-          id='image'
-          onInput={inputHandler}
-          errorText='Please provide an image.'
-        />
-        <Button type='submit' disabled={!formState.isValid}>
-          ADD PLACE
-        </Button>
+        <ImageUpload center large id='image' onInput={inputHandler} />
+        <div className='center'>
+          <Button type='submit' disabled={!formState.isValid}>
+            ADD PLACE
+          </Button>
+        </div>
       </form>
     </>
   );
