@@ -11,3 +11,4 @@
 - Typed the mongoose schema models to ensure data integrity.
 - Use Axios to fetch API data instead of built in fetch.
 - Use Type Generics to properly type the custom http hook response.
+- Implement changes in CSS that makes sense - (NewPlace form image size as an example)
