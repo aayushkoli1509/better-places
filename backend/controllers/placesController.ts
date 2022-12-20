@@ -46,7 +46,7 @@ const getPlacesByUserId = async (
       places: IPlaceModel[];
     }>('places');
 
-    if (!userWithPlaces || !userWithPlaces.places.length) {
+    if (!userWithPlaces) {
       return next(
         new HttpError('Could not find a place for the provided user id.', 404)
       );
