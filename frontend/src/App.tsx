@@ -15,7 +15,7 @@ const Users = lazy(() => import('@pages/Users'));
 const UserPlaces = lazy(() => import('@pages/UserPlaces'));
 const UpdatePlace = lazy(() => import('@pages/UpdatePlace'));
 const NewPlace = lazy(() => import('@pages/NewPlace'));
-const Auth = lazy(() => import('@pages/Auth/Auth'));
+const Auth = lazy(() => import('@pages/Auth'));
 
 const App = () => {
   const { token, login, logout, userId } = useAuth();
