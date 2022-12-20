@@ -117,13 +117,7 @@ const Auth = () => {
                 onInput={inputHandler}
                 placeholder='Rick Rollins'
               />
-              <ImageUpload
-                id='image'
-                name={formState.inputs.name.value as string}
-                onInput={inputHandler}
-                errorText='Please provide an image'
-                center
-              />
+              <ImageUpload id='image' onInput={inputHandler} center />
             </>
           )}
           <Input

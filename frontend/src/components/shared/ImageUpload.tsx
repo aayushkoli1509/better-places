@@ -7,18 +7,11 @@ import Button from './Button';
 interface IProps {
   id: string;
   onInput: (id: 'image', file: File | null, isValid: boolean) => void;
-  errorText: string;
-  name?: string;
   center?: boolean;
+  large?: boolean;
 }
 
-const ImageUpload: React.FC<IProps> = ({
-  id,
-  center,
-  onInput,
-  name,
-  errorText
-}) => {
+const ImageUpload: React.FC<IProps> = ({ id, center, onInput, large }) => {
   const filePickerRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File>();
   const [previewUrl, setPreviewUrl] = useState<string>();
@@ -63,8 +56,6 @@ const ImageUpload: React.FC<IProps> = ({
     onInput('image', pickedFile, fileIsValid);
   };
 
-  console.log(isTouched);
-
   return (
     <div
       className={`form-control ${
@@ -81,14 +72,14 @@ const ImageUpload: React.FC<IProps> = ({
         onClick={() => setIsTouched(true)}
       />
       <div className={`image-upload ${center && 'center'}`}>
-        <div className='image-upload__preview'>
+        <div className={`image-upload__preview ${large && 'large'}`}>
           {previewUrl || isValid ? (
             <img src={previewUrl} alt='Preview' />
           ) : (
             <p>Please pick an image.</p>
           )}
         </div>
-        <Button type='button' onClick={pickImageHandler}>
+        <Button type='button' onClick={pickImageHandler} inverse>
           PICK IMAGE
         </Button>
       </div>
