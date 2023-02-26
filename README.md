@@ -2,7 +2,7 @@
 
 A project that aims at creating a social media platform where users can share images & information about the interesting places they see and visit, built using **MERN** stack.
 
-This project was created as a follow-along for this [Udemy Course](https://www.udemy.com/course/react-nodejs-express-mongodb-the-mern-fullstack-guide/), but just following along is boring and so - I made the following changes/improvements to it:
+This project was created as a follow-along for this [Udemy Course](https://www.udemy.com/course/react-nodejs-express-mongodb-the-mern-fullstack-guide/), but just following along is boring and so, I made the following changes/improvements to it:
 
 ## Added Changes
 
